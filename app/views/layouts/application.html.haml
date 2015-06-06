@@ -7,17 +7,24 @@
 	= csrf_meta_tags
 
 %body
-
-	- if user_signed_in?
-		= link_to "Signout", destroy_user_session_path,:method=>:delete	
-	- else
-		= link_to "Signin", new_user_session_path
-		= link_to "SignUp", new_user_registration_path
-	.notice
-		= notice 
-	.alert
-		= alert
-		= yield
-		= link_to "All Articles", root_path
-		- Category.all.each do |category|
-			= link_to category.name, articles_path(:category=>category.name)
+	%nav.navbar.navbar-default.navbar-fixed-top
+		.container
+			= link_to "Wiki", root_path, class: "navbar-brand"
+			%ul.nav.navbar-nav.navbar-right
+				- if user_signed_in?
+					%li= link_to "Signout", destroy_user_session_path,:method=>:delete	
+					%li= link_to "New Article", new_article_path
+				- else
+					%li= link_to "Signin", new_user_session_path
+					%li= link_to "SignUp", new_user_registration_path
+	%p.notice= notice 
+	%p.alert=alert
+	.container
+		.row
+			.col-md-8
+				= yield
+			.col-md-4
+				%ul.list-group
+					%li= link_to "All Articles", root_path, class: "list-group-item"
+					- Category.all.each do |category|
+						%li= link_to category.name, articles_path(:category=>category.name), class: "list-group-item"
