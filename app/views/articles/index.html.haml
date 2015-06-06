@@ -5,4 +5,5 @@
 		Published at
 		=article.created_at
 	%p= truncate(article.content, length: 200)
-= link_to "New",new_article_path
+- if user_signed_in?	
+	= link_to "New",new_article_path
